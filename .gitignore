@@ -1,0 +1,28 @@
+# Ignore Node.js modules and dependencies
+node_modules/
+
+# Ignore log files and other generated files
+logs/
+*.log
+
+# Ignore environment configuration files
+.env
+
+# Ignore IDE and code editor configuration files
+.vscode/
+.idea/
+
+# Ignore build and distribution directories (if applicable)
+dist/
+build/
+
+# Ignore npm package lock files
+package-lock.json
+yarn.lock
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore temporary files and directories
+.tmp/
+.tmp/
