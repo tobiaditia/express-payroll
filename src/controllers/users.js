@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 
 const getUsers = async (req, res) => {
     try {
-        const [data] = await userModels.getUsers()
+        const data = await userModels.findAll()
         response.success(200, 'User data retrivied', data, res)
     } catch (error) {
         response.serverError(error, res)
@@ -20,7 +20,7 @@ const getUsersById = async (req, res) => {
     const id = req.params.id
 
     try {
-        const [data] = await userModels.getUsersById(id)
+        const data = await userModels.findByPk(id)
         response.success(200, 'User data retrivied', data, res)
     } catch (error) {
         response.serverError(error, res)
@@ -29,19 +29,17 @@ const getUsersById = async (req, res) => {
 
 const postUsers = async (req, res) => {
 
-    const resultValidation = validationResult(req)
-    if(resultValidation.isEmpty()){
-        const {body} = req
-        try {
-            const [data] = await userModels.postUsers(body)
-            response.success(201, 'User data created', data, res)
-        } catch (error) {
-            response.serverError(error, res)
-        }
+    const {body} = req
+    try {
+        const data = await userModels.create({
+            'email': body.email,
+            'password': body.password
+        })
+        response.success(201, 'User data created', data, res)
+    } catch (error) {
+        response.validate(error, res)
     }
     
-    response.validate(resultValidation.array(), res)
-
 }
 
 const putUsers = async (req, res) => {

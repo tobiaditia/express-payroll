@@ -15,11 +15,16 @@ const serverError = (data, res) => {
 }
 
 const validate = (data, res) => {
-    res.json(400, {
-        'success': false,
-        'message':'Validate Error',
-        data
-    })
+    if(data.name == 'SequelizeValidationError'){
+        res.json(400, {
+            'success': false,
+            'message':'Validate Error',
+            'data':data.errors
+        })
+    }else{
+        serverError(data, res)
+    }
+
 }
 
 module.exports = {
