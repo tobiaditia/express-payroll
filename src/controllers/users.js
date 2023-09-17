@@ -17,49 +17,82 @@ const getUsers = async (req, res) => {
 }
 
 const getUsersById = async (req, res) => {
-    const id = req.params.id
 
-    try {
-        const data = await userModels.findByPk(id)
-        response.success(200, 'User data retrivied', data, res)
-    } catch (error) {
-        response.serverError(error, res)
+    let errors = validationResult(req)
+    if(!errors.isEmpty()){
+        response.validate(errors, res)
+    }else{
+        const id = req.params.id
+
+        try {
+            const data = await userModels.findByPk(id)
+            response.success(200, 'User data retrivied', data, res)
+        } catch (error) {
+            response.serverError(error, res)
+        }
     }
+
 }
 
 const postUsers = async (req, res) => {
 
-    const {body} = req
-    try {
-        const data = await userModels.create({
-            'email': body.email,
-            'password': body.password
-        })
-        response.success(201, 'User data created', data, res)
-    } catch (error) {
-        response.validate(error, res)
+    let errors = validationResult(req)
+    if(!errors.isEmpty()){
+        response.validate(errors, res)
+    }else{
+        const {body} = req
+        try {
+            const data = await userModels.create({
+                'email': body.email,
+                'password': body.password
+            })
+            response.success(201, 'User data created', data, res)
+        } catch (error) {
+            response.validate(error, res)
+        }
     }
     
 }
 
 const putUsers = async (req, res) => {
-    const id = req.params.id
 
-    try {
-        const [data] = await userModels.putUsers(req, id)
-        response.success(201, 'User data updated', data, res)
-    } catch (error) {
-        response.serverError(error, res)
+    let errors = validationResult(req)
+    if(!errors.isEmpty()){
+        response.validate(errors, res)
+    }else{
+        const id = req.params.id
+    
+        try {
+            const data = await userModels.update(req.body, {
+                where:{
+                    id:id
+                }
+            })
+
+            response.success(201, 'User data updated', data, res)
+        } catch (error) {
+            response.serverError(error, res)
+        }
     }
 }
 
 const deleteUsers = async (req, res) => {
-    const id = req.params.id
-    try {
-        const [data] = await userModels.deleteUsers(id)
-        response.success(200, 'User data deleted', data, res)
-    } catch (error) {
-        response.serverError(error, res)
+
+    let errors = validationResult(req)
+    if(!errors.isEmpty()){
+        response.validate(errors, res)
+    }else{
+        const id = req.params.id
+        try {
+            const data = await userModels.destroy({
+                where:{
+                    id:id
+                }
+            })
+            response.success(200, 'User data deleted', data, res)
+        } catch (error) {
+            response.serverError(error, res)
+        }
     }
 }
 

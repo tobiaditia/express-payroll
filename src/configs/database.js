@@ -1,4 +1,4 @@
-const Sequalize = require('sequelize')
+const {Sequelize} = require('sequelize')
 
 const data = {
     host: process.env.DB_HOST,
@@ -14,7 +14,7 @@ const data = {
 
 const { database, user, password, host, dialect, pool_max, pool_min, pool_acquire, pool_idle } = data
 
-const db = new Sequalize(
+const db = new Sequelize(
     database,
     user,
     password,
